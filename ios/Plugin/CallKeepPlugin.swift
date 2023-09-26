@@ -120,17 +120,20 @@ extension CallKeepPlugin: PKPushRegistryDelegate {
     }
     
     public func pushRegistry(_ registry: PKPushRegistry, didReceiveIncomingPushWith payload: PKPushPayload, for type: PKPushType, completion: @escaping () -> Void) {
-         print("didReceiveIncomingPushWith")
-         guard let id = payload.dictionaryPayload["id"] as? String else {
-             return
-         }
-         let media = (payload.dictionaryPayload["media"] as? String) ?? "voice"
-         let name = (payload.dictionaryPayload["name"] as? String) ?? "Unknown"
-         let duration = (payload.dictionaryPayload["duration"] as? String) ?? "0"
-         print("id: \(id)")
-         print("name: \(name)")
-         print("media: \(media)")
-         print("duration: \(duration)")
+        print("didReceiveIncomingPushWith")
+  
+        guard let arrPayloadData = payload.dictionaryPayload["custom"] as? [String: Any] else { return }
+        guard let data = arrPayloadData["a"] as? [String:Any] else { return }
+        
+        guard let id:String = data["id"] as? String else { return }
+        let name:String = data["name"] as? String ?? "Unknown"
+        let media:String = data["media"] as? String ?? "audio"
+        let duration:String = data["duration"] as? String ?? "0"
+        
+        print("id: \(id)")
+        print("name: \(name)")
+        print("media: \(media)")
+        print("duration: \(duration)")
         self.incomingCall(id: id, media: media, name: name, duration: duration)
     }
 }
