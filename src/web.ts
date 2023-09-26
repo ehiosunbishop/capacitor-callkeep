@@ -7,4 +7,9 @@ export class CallKeepWeb extends WebPlugin implements CallKeepPlugin {
     console.log('ECHO', options);
     return options;
   }
+
+  async register(): Promise<void> {
+    console.log('Not supported on web.');
+    return;
+  }
 }
