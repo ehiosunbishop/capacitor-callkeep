@@ -104,6 +104,14 @@ extension CallKeepPlugin: CXProviderDelegate {
 
 
 extension CallKeepPlugin: PKPushRegistryDelegate {
+    
+    /*public func pushRegistry(_ registry: PKPushRegistry, didUpdate pushCredentials: PKPushCredentials, for type: PKPushType) {
+        let parts = pushCredentials.token.map { String(format: "%02.2hhx", $0) }
+        let token = parts.joined()
+        print("Token: \(token)")
+        notifyListeners("registration", data: ["value": token])
+    }*/
+    
     public func pushRegistry(_ registry: PKPushRegistry, didUpdate pushCredentials: PKPushCredentials, for type: PKPushType) {
         let parts = pushCredentials.token.map { String(format: "%02.2hhx", $0) }
         let token = parts.joined()
