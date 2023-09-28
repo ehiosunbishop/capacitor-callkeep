@@ -26,7 +26,7 @@ public class CallKeepPlugin: CAPPlugin {
     @objc func register(_ call: CAPPluginCall) {
         // config PushKit
         voipRegistry.delegate = self
-        voipRegistry.desiredPushTypes = [PKPushType.voIP]
+        voipRegistry.desiredPushTypes = [.voIP]
 
         let config = CXProviderConfiguration(localizedName: "Shwid Call")
         config.supportsVideo = true
@@ -35,7 +35,7 @@ public class CallKeepPlugin: CAPPlugin {
         config.supportedHandleTypes = [.generic]
         
         provider = CXProvider(configuration: config)
-        provider?.setDelegate(self, queue: DispatchQueue.main)
+        //provider?.setDelegate(self, queue: DispatchQueue.main)
         
         call.resolve()
     }
@@ -94,6 +94,7 @@ extension CallKeepPlugin: CXProviderDelegate {
         notifyEvent(eventName: "callEnded", uuid: action.callUUID)
         action.fulfill()
     }
+    
     public func provider(_ provider: CXProvider, perform action: CXStartCallAction) {
         // Report connection started
         print("CXStartCallAction represents initiating an outgoing call")
@@ -104,14 +105,6 @@ extension CallKeepPlugin: CXProviderDelegate {
 
 
 extension CallKeepPlugin: PKPushRegistryDelegate {
-    
-    /*public func pushRegistry(_ registry: PKPushRegistry, didUpdate pushCredentials: PKPushCredentials, for type: PKPushType) {
-        let parts = pushCredentials.token.map { String(format: "%02.2hhx", $0) }
-        let token = parts.joined()
-        print("Token: \(token)")
-        notifyListeners("registration", data: ["value": token])
-    }*/
-    
     public func pushRegistry(_ registry: PKPushRegistry, didUpdate pushCredentials: PKPushCredentials, for type: PKPushType) {
         let parts = pushCredentials.token.map { String(format: "%02.2hhx", $0) }
         let token = parts.joined()
@@ -136,6 +129,7 @@ extension CallKeepPlugin: PKPushRegistryDelegate {
         print("duration: \(duration)")
         self.incomingCall(id: id, media: media, name: name, duration: duration)
     }
+    
 }
 
 extension CallKeepPlugin {
